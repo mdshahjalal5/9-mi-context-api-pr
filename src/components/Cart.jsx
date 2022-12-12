@@ -1,10 +1,11 @@
 import React from 'react'
 import { useContext } from 'react'
-
+import { deleteShoppingCart } from '../utils/fakeDB'
 import { Link } from 'react-router-dom'
 import { removeFromDb } from '../utils/fakeDB'
 import CartItem from './CartItem'
 import { CartContext } from './Root'
+import { toast } from 'react-toastify'
 
 const Cart = () => {
   const [cart, setCart] = useContext(CartContext);
@@ -46,8 +47,16 @@ const Cart = () => {
               Back <span className='sr-only sm:not-sr-only'>to shop</span>
             </button>
           </Link>
-          <button
-            type='button'
+          <button type='button' onClick={()=>{
+            if(cart.length){
+              setCart([]);
+              deleteShoppingCart();
+              toast.success('order has done', {autoClose:300})
+            }
+            else{
+              toast.error('cart is empy please add to cart',{autoClose:300})
+            }
+          }}
             className='px-6 py-2 border font-semibold rounded-full hover:bg-cyan-400 bg-cyan-200 text-gray-800'
           >
             Place Order
